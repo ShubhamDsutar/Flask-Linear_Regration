@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>House Price Prediction</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1fd1d1ff, #c7aa4cff);
+            padding: 40px;
+            text-align: center;
+            color: #333;
+        }
+
+        nav {
+            margin-bottom: 30px;
+        }
+
+        nav a {
+            margin: 0 15px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #ffd700;
+        }
+
+        .container {
+            background-color: white;
+            padding: 40px 30px;
+            border-radius: 15px;
+            display: inline-block;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            width: 70%;
+            max-width: 600px;
+            animation: fadeIn 0.7s ease-in-out;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            width: 80%;
+            max-width: 300px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        input[type="submit"] {
+            padding: 12px 25px;
+            font-size: 16px;
+            background-color: #1fd1d1ff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #17b0b0;
+        }
+
+        h2 {
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        h3, p {
+            color: #555;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+    <script>
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.add('hidden'));
+            document.getElementById(pageId).classList.remove('hidden');
+        }
+
+        window.onload = () => {
+            // Flask will pass `result`, if not empty stay on prediction page
+            const result = "{{ result|default('') }}";
+            if (result.trim() !== "") {
+                showPage('predict');
+            } else {
+                showPage('home');
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <nav>
+        <a onclick="showPage('home')">Home</a>
+        <a onclick="showPage('predict')">Prediction</a>
+        <a onclick="showPage('about')">About Us</a>
+        <a onclick="showPage('contact')">Contact Us</a>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="container page">
+        <h2>Welcome to House Price Predictor</h2>
+        <p>Use this tool to estimate your house price based on area in square feet.</p>
+    </div>
+
+    <!-- Prediction Page -->
+    <div id="predict" class="container page hidden">
+        <h2>Enter House Area (sq ft)</h2> 
+        <form action="/predict" method="post">
+            <input type="text" name="x" placeholder="e.g. 2000"><br><br>
+            <input type="submit" value="Predict Price">
+        </form> 
+        <h3 style="margin-top: 30px;">{{ result }}</h3>
+    </div>
+
+    <!-- About Us Page -->
+    <div id="about" class="container page hidden">
+        <h2>About Our Project</h2>
+        <p>
+            This house price prediction app uses machine learning to estimate housing prices based on the area. It's simple, fast, and built with real-world data to assist users in making informed decisions.
+        </p>
+    </div>
+
+    <!-- Contact Us Page -->
+    <div id="contact" class="container page hidden">
+        <h2>Contact Us</h2>
+        <p>
+            We'd love to hear from you!<br><br>
+            📧 Email: support@housepredictor.com<br>
+            📞 Phone: +91 98765 43210
+        </p>
+    </div>
+
+</body>
+</html>
